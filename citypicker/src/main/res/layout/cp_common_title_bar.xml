@@ -22,16 +22,17 @@
             tools:ignore="ContentDescription" />
 
         <TextView
+            android:id="@+id/top_bar_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/cp_select_city"
-            android:textSize="20sp"
-            android:textColor="@color/cp_theme_gray" />
+            android:textColor="@color/top_text_color"
+            android:textSize="18sp" />
     </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/cp_shadow"/>
+        android:background="@color/cp_shadow" />
 </LinearLayout>

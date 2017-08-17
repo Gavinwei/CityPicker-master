@@ -9,7 +9,7 @@
 
     <TextView
         style="@style/LetterIndexTextViewStyle"
-        android:text="@string/cp_located_city"/>
+        android:text="@string/cp_located_city" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -20,13 +20,15 @@
         <LinearLayout
             android:id="@+id/layout_locate"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:minWidth="96dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:background="@drawable/city_item_shape"
             android:clickable="true"
-            android:background="?android:attr/selectableItemBackground">
+            android:gravity="center"
+            android:minWidth="96dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="13dp"
+            android:paddingRight="13dp"
+            android:paddingTop="8dp">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -40,8 +42,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:text="@string/cp_locating"
-                android:textSize="16sp"
-                android:textColor="@color/cp_gray_deep"/>
+                android:textColor="@color/cp_gray_deep"
+                android:textSize="15sp" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
