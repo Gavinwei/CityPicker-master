@@ -1,7 +1,11 @@
 package com.gavin.citypicker;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -23,7 +27,6 @@ import com.gavin.citypicker.adapter.ResultListAdapter;
 import com.gavin.citypicker.db.DBManager;
 import com.gavin.citypicker.model.City;
 import com.gavin.citypicker.model.LocateState;
-import com.gavin.citypicker.utils.StringUtils;
 import com.gavin.citypicker.view.SideLetterBar;
 
 import java.util.List;
@@ -53,12 +56,21 @@ public class CityPickerActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cp_activity_city_list);
-
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            //申请WRITE_EXTERNAL_STORAGE权限
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    100);//自定义的code
+        }
         initData();
         initView();
         initLocation();
     }
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        //可在此继续其他操作。
+    }
     private void initLocation() {
         mLocationClient = new AMapLocationClient(this);
         AMapLocationClientOption option = new AMapLocationClientOption();
@@ -72,8 +84,7 @@ public class CityPickerActivity extends AppCompatActivity implements View.OnClic
                     if (aMapLocation.getErrorCode() == 0) {
                         String city = aMapLocation.getCity();
                         String district = aMapLocation.getDistrict();
-                        String location = StringUtils.extractLocation(city, district);
-                        mCityAdapter.updateLocateState(LocateState.SUCCESS, location);
+                        mCityAdapter.updateLocateState(LocateState.SUCCESS, city);
                     } else {
                         //定位失败
                         mCityAdapter.updateLocateState(LocateState.FAILED, null);
@@ -122,10 +133,12 @@ public class CityPickerActivity extends AppCompatActivity implements View.OnClic
         searchBox = (EditText) findViewById(R.id.et_search);
         searchBox.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -165,7 +178,7 @@ public class CityPickerActivity extends AppCompatActivity implements View.OnClic
         backBtn.setOnClickListener(this);
     }
 
-    private void back(String city){
+    private void back(String city) {
         Intent data = new Intent();
         data.putExtra(KEY_PICKED_CITY, city);
         setResult(RESULT_OK, data);
